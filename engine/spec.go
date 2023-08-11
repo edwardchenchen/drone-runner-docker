@@ -57,6 +57,7 @@ type (
 		User         string            `json:"user,omitempty"`
 		Volumes      []*VolumeMount    `json:"volumes,omitempty"`
 		WorkingDir   string            `json:"working_dir,omitempty"`
+		GPU          bool              `json:"gpu,omitempty"`
 	}
 
 	// Secret represents a secret variable.

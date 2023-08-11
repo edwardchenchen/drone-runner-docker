@@ -78,6 +78,7 @@ type Config struct {
 		CPUShares  int64    `envconfig:"DRONE_CPU_SHARES"`
 		CPUSet     []string `envconfig:"DRONE_CPU_SET"`
 		ShmSize    int64    `envconfig:"DRONE_SHM_SIZE"`
+		GPU        bool     `envconfig:"DRONE_GPU_ENABLED" default:"false"`
 	}
 
 	Environ struct {

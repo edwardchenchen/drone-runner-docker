@@ -87,6 +87,7 @@ func (c *processCommand) run(*kingpin.ParseContext) error {
 				CPUShares:  config.Resources.CPUShares,
 				CPUSet:     config.Resources.CPUSet,
 				ShmSize:    config.Resources.ShmSize,
+				GPU:        config.Resources.GPU,
 			},
 			Environ: provider.Combine(
 				provider.Static(config.Runner.Environ),

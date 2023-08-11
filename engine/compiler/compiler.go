@@ -54,6 +54,7 @@ type Resources struct {
 	CPUShares  int64
 	CPUSet     []string
 	ShmSize    int64
+	GPU        bool
 }
 
 // Tmate defines tmate settings.
@@ -466,6 +467,7 @@ func (c *Compiler) Compile(ctx context.Context, args runtime.CompilerArgs) runti
 		step.CPUQuota = c.Resources.CPUQuota
 		step.CPUShares = c.Resources.CPUShares
 		step.CPUSet = c.Resources.CPUSet
+		step.GPU = c.Resources.GPU
 	}
 
 	// append global networks to the steps.

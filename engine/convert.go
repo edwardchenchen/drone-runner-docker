@@ -73,14 +73,23 @@ func toHostConfig(spec *Spec, step *Step) *container.HostConfig {
 	if len(step.ExtraHosts) > 0 {
 		config.ExtraHosts = step.ExtraHosts
 	}
+	gpuRequest := container.DeviceRequest{}
+	if step.GPU == true {
+		gpuRequest = container.DeviceRequest{
+			Driver:       "nvidia", // Default driver
+			Count:        -1,       // All available devices
+			Capabilities: [][]string{{"gpu"}},
+		}
+	}
 	if isUnlimited(step) == false {
 		config.Resources = container.Resources{
-			CPUPeriod:  step.CPUPeriod,
-			CPUQuota:   step.CPUQuota,
-			CpusetCpus: strings.Join(step.CPUSet, ","),
-			CPUShares:  step.CPUShares,
-			Memory:     step.MemLimit,
-			MemorySwap: step.MemSwapLimit,
+			CPUPeriod:      step.CPUPeriod,
+			CPUQuota:       step.CPUQuota,
+			CpusetCpus:     strings.Join(step.CPUSet, ","),
+			CPUShares:      step.CPUShares,
+			Memory:         step.MemLimit,
+			MemorySwap:     step.MemSwapLimit,
+			DeviceRequests: []container.DeviceRequest{gpuRequest},
 		}
 	}
 
@@ -266,7 +275,8 @@ func isUnlimited(res *Step) bool {
 		res.CPUQuota == 0 &&
 		res.CPUShares == 0 &&
 		res.MemLimit == 0 &&
-		res.MemSwapLimit == 0
+		res.MemSwapLimit == 0 &&
+		res.GPU == false
 }
 
 // returns true if the volume is a bind mount.
