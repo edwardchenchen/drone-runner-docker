@@ -85,8 +85,7 @@ func toHostConfig(spec *Spec, step *Step) *container.HostConfig {
 			DeviceRequests: []container.DeviceRequest{
 				{
 					Driver:       "nvidia", // Default driver
-					Count:        1,        // All available devices
-					DeviceIDs:    []string{"0"},
+					Count:        -1,       // All available devices
 					Capabilities: [][]string{{"gpu"}},
 				},
 			},
