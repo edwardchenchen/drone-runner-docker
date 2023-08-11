@@ -73,23 +73,23 @@ func toHostConfig(spec *Spec, step *Step) *container.HostConfig {
 	if len(step.ExtraHosts) > 0 {
 		config.ExtraHosts = step.ExtraHosts
 	}
-	gpuRequest := container.DeviceRequest{}
-	if step.GPU == true {
-		gpuRequest = container.DeviceRequest{
-			Driver:       "nvidia", // Default driver
-			Count:        -1,       // All available devices
-			Capabilities: [][]string{{"gpu"}},
-		}
-	}
+
 	if isUnlimited(step) == false {
 		config.Resources = container.Resources{
-			CPUPeriod:      step.CPUPeriod,
-			CPUQuota:       step.CPUQuota,
-			CpusetCpus:     strings.Join(step.CPUSet, ","),
-			CPUShares:      step.CPUShares,
-			Memory:         step.MemLimit,
-			MemorySwap:     step.MemSwapLimit,
-			DeviceRequests: []container.DeviceRequest{gpuRequest},
+			CPUPeriod:  step.CPUPeriod,
+			CPUQuota:   step.CPUQuota,
+			CpusetCpus: strings.Join(step.CPUSet, ","),
+			CPUShares:  step.CPUShares,
+			Memory:     step.MemLimit,
+			MemorySwap: step.MemSwapLimit,
+			DeviceRequests: []container.DeviceRequest{
+				{
+					Driver:       "nvidia", // Default driver
+					Count:        1,        // All available devices
+					DeviceIDs:    []string{"0"},
+					Capabilities: [][]string{{"gpu"}},
+				},
+			},
 		}
 	}
 
